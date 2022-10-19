@@ -14,8 +14,8 @@ def load(
             "result_only",
             "result_with_original",
             "result_with_contrastive_pair"
-        ] = "result_with_contrastive_pair",
-        create_artificial_anomalies=True,
+        ] = "result_only",
+        create_artificial_anomalies=False,
         validation_split=0.2,
         subset_mode: Optional[Literal[
             "training",
@@ -23,7 +23,7 @@ def load(
             "test",
             "holdout"
         ]] = "training",
-        drop_masks=False,
+        drop_masks=True,
         width=256,
         height=256,
         repeat=True,
@@ -49,10 +49,16 @@ def load(
     Executes ``download_and_prepare`` first.
     Then builds a ``tf.data.Dataset`` according to the arguments
 
+
+    Example
+
+    .. code-block:: python
+
+        ds = tfd.load(names=["mvtec"], data_dir=Path("."), batch_size=4
+
     .. WARNING::
         Warning: calling this function might potentially trigger the download
         of 30+ GiB to disk. Refer to the download argument.
-
 
     names : ``Iterable[Literal["mvtec", "visa"]]``
         List of named datasets to load. Defaults to ["mvtec", "visa"]
