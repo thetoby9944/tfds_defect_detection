@@ -157,12 +157,13 @@ class DatasetBuilder(BaseModel):
             self._rand_images_by_label[label] = iter(filtered_ds)
 
     def peek_dataset(self):
-        num_images = (
+        num_images = int(
                 self.num_files * self.validation_split
                 if self.subset is "validation"
                 else self.num_files * (1-self.validation_split)
         )
-        print(f"DatasetBuilder uses {num_images}/{self.num_files} images")
+        print(f"DatasetBuilder uses {num_images} of {self.num_files} "
+              f"images in {self.image_directory}")
         print(f"Here is the first batch")
         batches = next(self.ds.take(10).as_numpy_iterator())
         # print(list([batch.shape for batch in batches]))
