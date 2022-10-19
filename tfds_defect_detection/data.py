@@ -12,7 +12,7 @@ from skimage.draw import polygon2mask
 from typing_extensions import Literal
 
 from tfds_defect_detection.utils import random_slice, blend_merge, masking, \
-    combine_binary_masks
+    combine_binary_masks, _HiddenPrints
 
 from pydantic import BaseModel
 
@@ -102,31 +102,33 @@ class DatasetBuilder(BaseModel):
         self._num_classes = len(self._class_names)
 
     def _init_partial_datasets(self):
-        self._raw_ds: tf.data.Dataset = image_dataset_from_directory(
-            directory=self.image_directory,
-            validation_split=self.validation_split,
-            subset=self.subset,
-            seed=self.seed,
-            image_size=(self.width, self.height),
-            batch_size=1,
-            shuffle=self.shuffle
-        ).unbatch()
+        with _HiddenPrints():
+            self._raw_ds: tf.data.Dataset = image_dataset_from_directory(
+                directory=self.image_directory,
+                validation_split=self.validation_split,
+                subset=self.subset,
+                seed=self.seed,
+                image_size=(self.width, self.height),
+                batch_size=1,
+                shuffle=self.shuffle
+            ).unbatch()
+
         if self.repeat:
             self._raw_ds = self._raw_ds.repeat()
 
         if self.mask_directory is not None:
-
-            self._mask_ds = image_dataset_from_directory(
-                directory=self.mask_directory,
-                validation_split=self.validation_split,
-                subset=self.subset,
-                seed=self.seed,
-                shuffle=self.shuffle,
-                image_size=(self.width, self.height),
-                batch_size=1,
-                color_mode='grayscale',
-                interpolation="nearest"
-            ).unbatch()
+            with _HiddenPrints():
+                self._mask_ds = image_dataset_from_directory(
+                    directory=self.mask_directory,
+                    validation_split=self.validation_split,
+                    subset=self.subset,
+                    seed=self.seed,
+                    shuffle=self.shuffle,
+                    image_size=(self.width, self.height),
+                    batch_size=1,
+                    color_mode='grayscale',
+                    interpolation="nearest"
+                ).unbatch()
 
             if self.repeat:
                 self._mask_ds = self._mask_ds.repeat()
@@ -138,15 +140,16 @@ class DatasetBuilder(BaseModel):
                     [self.color_dict[i] for i in range(2)]
                 ))
             )
-        contrastive_ds: tf.data.Dataset = image_dataset_from_directory(
-            directory=self.image_directory,
-            validation_split=self.validation_split,
-            subset=self.subset,
-            shuffle=True,
-            seed=self.seed + 1,
-            image_size=(self.width, self.height),
-            batch_size=1
-        ).unbatch()
+        with _HiddenPrints():
+            contrastive_ds: tf.data.Dataset = image_dataset_from_directory(
+                directory=self.image_directory,
+                validation_split=self.validation_split,
+                subset=self.subset,
+                shuffle=True,
+                seed=self.seed + 1,
+                image_size=(self.width, self.height),
+                batch_size=1
+            ).unbatch()
         self._rand_images_by_label = {}
         for label in range(self._num_classes):
             filtered_ds = contrastive_ds.filter(lambda x, y: tf.equal(y, label))
@@ -154,6 +157,13 @@ class DatasetBuilder(BaseModel):
             self._rand_images_by_label[label] = iter(filtered_ds)
 
     def peek_dataset(self):
+        num_images = (
+                self.num_files * self.validation_split
+                if self.subset is "validation"
+                else self.num_files * (1-self.validation_split)
+        )
+        print(f"DatasetBuilder uses {num_images}/{self.num_files} images")
+        print(f"Here is the first batch")
         batches = next(self.ds.take(10).as_numpy_iterator())
         # print(list([batch.shape for batch in batches]))
         original_batch, image_batch, mask_batch = None, None, None

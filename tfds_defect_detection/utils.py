@@ -9,6 +9,18 @@ import tensorflow as tf
 from tqdm import tqdm
 
 
+import os, sys
+
+
+class _HiddenPrints:
+    def __enter__(self):
+        self._original_stdout = sys.stdout
+        sys.stdout = open(os.devnull, 'w')
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        sys.stdout.close()
+        sys.stdout = self._original_stdout
+
 def mask_by_color(img: tf.Tensor, col: Tuple[int, int, int]) -> tf.Tensor:
     img = tf.cast(img == col, dtype=tf.uint8)
     img = tf.reduce_sum(img, axis=-1) == 3
