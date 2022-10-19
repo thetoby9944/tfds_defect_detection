@@ -1,0 +1,3 @@
+# recursive-include mavis/assets *
+# recursive-include mavis/.streamlit *
+include requirements.txt

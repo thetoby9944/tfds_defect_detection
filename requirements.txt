@@ -1,0 +1,10 @@
+tqdm~=4.19
+pydantic~=1.9
+
+tensorflow~=2.9
+albumentations~=1.2
+scikit-image~=0.16
+opencv-python-headless~=4.6.0
+
+polygenerator~=0.2
+matplotlib~=3.1
