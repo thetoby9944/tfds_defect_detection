@@ -1,12 +1,13 @@
 
-.. _logo:
 .. figure:: tfds_defect_detection/assets/images/logo.png
    :align: center
    :alt:
    :scale: 50 %
 
+
+========================================
 TensorFlow Datasets for Defect Detection
-=============================================
+========================================
 
 To directly jump into look at the NOTEBOOK.
 
@@ -50,7 +51,7 @@ Usage
 
     For documentation and usage see
 
-    https://mavis-core.readthedocs.io/en/latest/
+    https://tfds-defect-detection.readthedocs.io/en/latest/README.html
 
 
 .. admonition:: Cite

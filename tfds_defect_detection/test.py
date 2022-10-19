@@ -5,7 +5,7 @@ def unit_test():
     from tfds_defect_detection import load
     defaults = {
         "data_dir": Path("E://data"),
-        "download": False,
+        "download": True,
         "shuffle": False
     }
 

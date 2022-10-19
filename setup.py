@@ -6,6 +6,8 @@ from setuptools import find_packages
 with open("README.rst", "r") as fh:
     long_description = fh.read()
 
+print(long_description)
+
 with open('requirements.txt') as f:
     required = f.read().splitlines()
 
@@ -20,9 +22,7 @@ static_folders = ["assets"]  # "scripts"]
 setup(
     version=version,
     name='tfds_defect_detection',
-    description='Tensorflow dataset builder for: \n'
-                'a) Un-/self-supervised segmentation (MVTEC, VISA)\n'
-                'b) Semi-supervised segmentation w/ artificial defects \n',
+    description='TensorFlow Datasets for Defect Detection',
     long_description=long_description,
     # scripts=[str((Path(root_folder) / 'scripts' / 'mavis_core.py'))],
     url='https://github.com/thetoby9944/tfds_defect_detection',
