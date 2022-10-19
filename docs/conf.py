@@ -33,7 +33,6 @@ release = '0.1.0'
 # specifying the natural language populates some key tags
 language = "en"
 
-
 # -- General configuration ---------------------------------------------------
 
 # Allows using numbered figures in latex and html output
@@ -51,12 +50,12 @@ extensions = [
     "recommonmark",  # Allow processing md files
     'sphinx.ext.viewcode',  # Link sources to documentation
     'autoapi.extension',  # generate documentation from docstrings
-    'sphinx_markdown_tables',  # allow markdown style tables (only works for html output sadly)
+    'sphinx_markdown_tables',
+    # allow markdown style tables (only works for html output sadly)
     'sphinx.ext.napoleon',
-    #'sphinxcontrib.autohttp.web', # generate web endpoints from source code
-    #'sphinxcontrib.bibtex',  # Allows using :cite:`bibtexentry` in .rst files
+    # 'sphinxcontrib.autohttp.web', # generate web endpoints from source code
+    # 'sphinxcontrib.bibtex',  # Allows using :cite:`bibtexentry` in .rst files
 ]
-
 
 # Map file-extensions to sphinx parser
 source_suffix = {
@@ -70,14 +69,15 @@ source_suffix = {
 autoapi_type = 'python'
 autoapi_dirs = [
     "../tfds_defect_detection",
-    #"../../modules/"
+    # "../../modules/"
 ]
-autoapi_ignore = []#"*/lib/*", "*/playground/*", "*/model/*", "*/models/*", "*/nima/*", "*/qtclient/*", "*webclient/config*"]
+autoapi_ignore = []  # "*/lib/*", "*/playground/*", "*/model/*", "*/models/*", "*/nima/*", "*/qtclient/*", "*webclient/config*"]
 autoapi_template_dir = '_templates'
 autoapi_add_toctree_entry = True
 autoapi_member_order = "groupwise"
 autoapi_keep_files = True
-autoapi_options =  [ 'members', 'undoc-members', 'show-inheritance', 'show-module-summary', 'special-members', ]
+autoapi_options = ['members', 'undoc-members', 'show-inheritance',
+                   'show-module-summary', 'special-members', ]
 # autodoc_inherit_docstrings = False
 
 
@@ -93,26 +93,23 @@ exclude_patterns = [
     "README.md"
 ]
 
-
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
 
-#extensions.append('sphinx_typo3_theme')
-#html_theme = 'sphinx_typo3_theme'
-
-import sphinx_bootstrap_theme
+# extensions.append('sphinx_typo3_theme')
+# html_theme = 'sphinx_typo3_theme'
 
 # Activate the theme.
-#html_theme = 'bootstrap'
-#html_theme_path = [sphinx_bootstrap_theme.get_html_theme_path()]
+# html_theme = 'bootstrap'
+# html_theme_path = [sphinx_bootstrap_theme.get_html_theme_path()]
 
-#extensions.append( "sphinxawesome_theme")
-#html_theme =  "sphinxawesome_theme"
+# extensions.append( "sphinxawesome_theme")
+# html_theme =  "sphinxawesome_theme"
 
-html_theme = "pydata_sphinx_theme" #
+html_theme = "pydata_sphinx_theme"  #
 html_logo = "images/logo.png"
 html_favicon = 'images/icon.png'
 
@@ -121,7 +118,6 @@ html_favicon = 'images/icon.png'
 # so a file named "default.css" will overwrite the builtin "default.css".
 # html_static_path = ['_static']
 html_sidebars = {'index': ["search-field.html", 'sidebar-nav-bs.html']}
-
 
 html_theme_options = {
     "github_url": "https://github.com/thetoby9944/tfds_defect_detection",
@@ -151,10 +147,10 @@ html_context = {
 
 # -- Options for Latex output -------------------------------------------------
 
-#latex_docclass = {
+# latex_docclass = {
 #   'howto': 'ausarbeitung',
 #   'manual': 'ausarbeitung',
-#}
+# }
 
 asset_src = Path("../tfds_defect_detection/assets/images")
 
@@ -172,10 +168,9 @@ for dst in [
     except:
         pass
 
-
 latex_documents = [
     (master_doc, 'master.tex', u'TFDS Defect Detection',
-     u'Tobias Schiele', 'report'), #"report"
+     u'Tobias Schiele', 'report'),  # "report"
 ]
 
 latex_logo = 'tfds_defect_detection/assets/images/logo.png'
@@ -184,16 +179,16 @@ latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     #
     'papersize': 'a4paper',
-    'releasename':" ",
+    'releasename': " ",
 
     # Sonny, Lenny, Glenn, Conny, Rejne, Bjarne and Bjornstrup
-    #'fncychap': '\\usepackage[Glenn]{fncychap}',
-    #'fncychap': '\\usepackage{fncychap}',
+    # 'fncychap': '\\usepackage[Glenn]{fncychap}',
+    # 'fncychap': '\\usepackage{fncychap}',
     'fontpkg': '\\usepackage{amsmath,amsfonts,amssymb,amsthm}',
 
     # Latex figure (float) alignment
     #
-    'figure_align':'htbp',
+    'figure_align': 'htbp',
 
     # The font size ('10pt', '11pt' or '12pt').
     #
@@ -201,7 +196,6 @@ latex_elements = {
 
     'inputenc': '',
     'utf8extra': '',
-
 
     # Additional stuff for the LaTeX preamble.
     #
@@ -471,6 +465,6 @@ latex_elements = {
     # Table of contens
     # - defined in title
     #
-    'tableofcontents':' ',
+    'tableofcontents': ' ',
 
 }

@@ -2,6 +2,8 @@ import os
 import shutil
 import csv
 from pathlib import Path
+
+from keras.utils import get_file
 from tqdm import tqdm
 
 from PIL import Image
@@ -42,7 +44,7 @@ def convert_to_mvtec_style(data_dir: Path):
 
     with open(split_file, 'r') as file:
         csvreader = csv.reader(file)
-        header = next(csvreader)
+        _ = next(csvreader)  # header
         for row in tqdm(list(csvreader)):
             object, set, label, image_path, mask_path = row
             if label == 'normal':

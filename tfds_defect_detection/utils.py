@@ -1,4 +1,5 @@
 import random
+import shutil
 from pathlib import Path
 from typing import Tuple, List
 
@@ -78,20 +79,24 @@ def random_slice(np_img, width, height=None):
 
 
 def combine_binary_masks(mask_1, mask_2):
+    tf.assert_equal(tf.reduce_sum(mask_1),
+                    mask_1.shape[0] * mask_1.shape[1] * 1.,
+                    message="first assertion")
+    tf.assert_equal(tf.reduce_sum(mask_2),
+                    mask_2.shape[0] * mask_2.shape[1] * 1.,
+                    message="second assertion")
 
-    tf.assert_equal(tf.reduce_sum(mask_1), mask_1.shape[0] * mask_1.shape[1] * 1., message="first assertion")
-    tf.assert_equal(tf.reduce_sum(mask_2), mask_2.shape[0] * mask_2.shape[1] * 1., message="second assertion")
-
-    foreground = mask_1[...,1] + mask_2[...,1]
+    foreground = mask_1[..., 1] + mask_2[..., 1]
     foreground = tf.clip_by_value(foreground, 0, 1)
 
-    ones = tf.ones_like(mask_1[...,0])
+    ones = tf.ones_like(mask_1[..., 0])
     background = ones - foreground
 
     result = tf.stack((background, foreground), axis=-1)
-    tf.assert_equal(tf.reduce_sum(result), result.shape[0] * result.shape[1]* 1., message="thirdasserstion")
+    tf.assert_equal(tf.reduce_sum(result),
+                    result.shape[0] * result.shape[1] * 1.,
+                    message="thirdasserstion")
     return result
-
 
 
 def blend_merge(foreground, background, mask):

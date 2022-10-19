@@ -1,4 +1,3 @@
-import shutil
 from pathlib import Path
 
 from keras.utils import get_file
@@ -11,7 +10,7 @@ from tfds_defect_detection.utils import copy_to_folder
 def _prepare_good_images(
         download_directory: Path,
         new_root="train_images",
-        skip_if_image_exists = True
+        skip_if_image_exists=True
 
 ):
     old_root = download_directory.name
@@ -32,7 +31,7 @@ def _prepare_anomaly_images_with_masks(
         new_root_images="test_images",
         new_root_masks="test_masks",
         mask_suffix="_mask",
-        skip_if_image_exists = True
+        skip_if_image_exists=True
 ):
     old_root = download_directory.name
     print("Preparing", old_root, new_root_images, "and", new_root_masks)
@@ -41,7 +40,7 @@ def _prepare_anomaly_images_with_masks(
         if img_path.name.startswith("."):
             continue
         img_target = Path(str(img_path).replace(old_root, new_root_images))
-        if skip_if_image_exists and img_target.is_file() :
+        if skip_if_image_exists and img_target.is_file():
             continue
 
         mask_path = Path(str(img_path).replace("test", "ground_truth"))
