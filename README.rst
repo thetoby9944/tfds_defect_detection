@@ -9,7 +9,7 @@
 TensorFlow Datasets for Defect Detection
 ========================================
 
-To directly jump into look at the NOTEBOOK.
+To directly jump into look at the `sample notebook <TensorFlow Datasets for Defect Detection.ipynb>`.
 
 .. admonition:: Features
 
