@@ -58,18 +58,18 @@ def download_and_prepare(
         "visa": VisaDownloader(delete_tmp=delete_tmp)
     }
     for name in names:
-        cache_dir = cache_dir / name
+        ds_cache_dir = cache_dir / name
         result = (
-            cache_dir / "train_images",
-            cache_dir / "test_images",
-            cache_dir / "test_masks"
+            ds_cache_dir / "train_images",
+            ds_cache_dir / "test_images",
+            ds_cache_dir / "test_masks"
         )
         if download is False:
             return result
 
-        cache_dir.mkdir(exist_ok=True, parents=True)
+        ds_cache_dir.mkdir(exist_ok=True, parents=True)
 
-        base_root = downloaders[name].download_and_extract(cache_dir)
+        base_root = downloaders[name].download_and_extract(ds_cache_dir)
         root = downloaders[name].convert_to_mvtec_style(base_root)
 
         result = restructure_mvtec_style_dataset(
