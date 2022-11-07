@@ -52,6 +52,7 @@ class DatasetBuilder(BaseModel):
     anomaly_composition = A.Compose([])
     batch_size = 8
     seed = 123
+    crop_to_aspect_ratio = False
 
     _num_classes = None
     _class_names = None
@@ -109,7 +110,9 @@ class DatasetBuilder(BaseModel):
                 seed=self.seed,
                 image_size=(self.width, self.height),
                 batch_size=1,
-                shuffle=self.shuffle
+                color_mode='rgb',
+                shuffle=self.shuffle,
+                crop_to_aspect_ratio=self.crop_to_aspect_ratio
             ).unbatch()
 
         if self.repeat:
@@ -125,8 +128,9 @@ class DatasetBuilder(BaseModel):
                     shuffle=self.shuffle,
                     image_size=(self.width, self.height),
                     batch_size=1,
-                    color_mode='grayscale',
-                    interpolation="nearest"
+                    color_mode='rgb',
+                    interpolation="nearest",
+                    crop_to_aspect_ratio=self.crop_to_aspect_ratio
                 ).unbatch()
 
             if self.repeat:
@@ -145,9 +149,11 @@ class DatasetBuilder(BaseModel):
                 validation_split=self.validation_split,
                 subset=self.subset,
                 shuffle=True,
+                color_mode='rgb',
                 seed=self.seed + 1,
                 image_size=(self.width, self.height),
-                batch_size=1
+                batch_size=1,
+                crop_to_aspect_ratio=self.crop_to_aspect_ratio,
             ).unbatch()
         self._rand_images_by_label = {}
         for label in range(self._num_classes):

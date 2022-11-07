@@ -3,6 +3,7 @@ __version__ = "0.1.0"
 from pathlib import Path
 from typing import Optional, Iterable
 
+from tensorflow.data.experimental import sample_from_datasets
 from typing_extensions import Literal
 import albumentations as A
 
@@ -37,6 +38,8 @@ def load(
         peek=True,
         download=True,
         image_validation=False,
+        crop_to_aspect_ratio=False,
+        delete_tmp=True,
 ):
     """
 
@@ -146,6 +149,22 @@ def load(
         Whether to open all images beforehand calling the DatasetBuilder.
         This will print the name of corrupted image files,
         which cannot be read by tensorflow. Defaults to ``False``
+    crop_to_aspect_ratio : optional, ``bool``
+        If True, resize the images without aspect ratio distortion.
+        When the original aspect ratio differs from the target aspect ratio,
+        the output image will be cropped so, as to return the largest possible
+        window in the image (of size image_size) that matches
+        the target aspect ratio. By default, (crop_to_aspect_ratio=False),
+        aspect ratio may not be preserved.
+    delete_tmp : optional, ``bool``
+        If True (default), deletes temporary versions of the datasets.
+        Only keeps the processed version of each dataset.
+        This means the original rchive, the original dataset,
+        and any intermediate processing steps are deleted. This saves memory.
+        The final results are still cached,
+        so you can safely rerun this function without the need to download
+        again. Yet, if you want to have a look at the original datasets,
+        consider disabling this parameter.
 
     ``tf.data.Dataset``
         the dataset requested, or if subset_mode is None,
@@ -156,42 +175,43 @@ def load(
 
     kwargs = locals().copy()
 
-    train_folder, test_image_folder, test_mask_folder = download_and_prepare(
+    all_folders = download_and_prepare(
         cache_dir=data_dir,
         names=names,
         download=download,
-        image_validation=image_validation
+        image_validation=image_validation,
+        delete_tmp=delete_tmp
     )
 
-    result = {
-        "training": lambda: DatasetBuilder(
-            image_directory=train_folder,
-            subset="training",
-            **kwargs
-        ).ds,
-        "validation": lambda: DatasetBuilder(
-            image_directory=train_folder,
-            subset="validation",
-            **kwargs
-        ).ds,
-        "test": lambda: DatasetBuilder(
-            image_directory=test_image_folder,
-            mask_directory=test_mask_folder,
-            subset="training",
-            **kwargs
-        ).ds,
-        "holdout": lambda: DatasetBuilder(
-            image_directory=test_image_folder,
-            mask_directory=test_mask_folder,
-            subset="validation",
-            **kwargs
-        ).ds
-    }
+    datasets = [
+        {
+            "training": lambda: DatasetBuilder(
+                image_directory=train_folder,
+                subset="training",
+                **kwargs
+            ).ds,
+            "validation": lambda: DatasetBuilder(
+                image_directory=train_folder,
+                subset="validation",
+                **kwargs
+            ).ds,
+            "test": lambda: DatasetBuilder(
+                image_directory=test_image_folder,
+                mask_directory=test_mask_folder,
+                subset="training",
+                **kwargs
+            ).ds,
+            "holdout": lambda: DatasetBuilder(
+                image_directory=test_image_folder,
+                mask_directory=test_mask_folder,
+                subset="validation",
+                **kwargs
+            ).ds
+        }[subset_mode]()
+        for train_folder, test_image_folder, test_mask_folder in all_folders
+    ]
 
-    if subset_mode is None:
-        return {k: v() for k, v in result.items()}
-    else:
-        return result[subset_mode]()
+    return sample_from_datasets(datasets)
 
 
 if __name__ == '__main__':

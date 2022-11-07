@@ -1,3 +1,4 @@
+import shutil
 from pathlib import Path
 
 from keras.utils import get_file
@@ -11,7 +12,6 @@ def _prepare_good_images(
         download_directory: Path,
         new_root="train_images",
         skip_if_image_exists=True
-
 ):
     old_root = download_directory.name
     print("Preparing", old_root, new_root)
@@ -70,8 +70,9 @@ def restructure_mvtec_style_dataset(
         new_root_test_images="test_images",
         new_root_test_masks="test_masks",
         mask_suffix="_mask",
+        delete_tmp=True
 ):
-    return (
+    result = (
         _prepare_good_images(
             root_dir,
             new_root_train_images
@@ -83,6 +84,11 @@ def restructure_mvtec_style_dataset(
             mask_suffix
         )
     )
+    if delete_tmp:
+        shutil.rmtree(root_dir, ignore_errors=True)
+        root_dir.mkdir(parents=True, exist_ok=True)
+
+    return result
 
 
 if __name__ == "__main__":

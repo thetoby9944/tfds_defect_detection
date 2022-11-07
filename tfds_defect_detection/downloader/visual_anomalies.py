@@ -15,13 +15,14 @@ def _mkdirs_if_not_exists(path):
         os.makedirs(path)
 
 
-def convert_to_mvtec_style(data_dir: Path):
-    print("Converting", str(data_dir), "to mvtec-style dataset")
+def convert_to_mvtec_style(data_dir: Path, delete_tmp=True):
     split_file = data_dir / "split_csv" / "1cls.csv"
     save_folder = data_dir.parent / (data_dir.stem + "_mvtec_style")
 
     if save_folder.is_dir():
         return save_folder
+
+    print("Converting", str(data_dir), "to mvtec-style dataset")
 
     data_list = ['candle', 'capsules', 'cashew', 'chewinggum', 'fryum',
                  'macaroni1', 'macaroni2', 'pcb1', 'pcb2',
@@ -67,7 +68,9 @@ def convert_to_mvtec_style(data_dir: Path):
                 mask = Image.fromarray(mask_array.astype(np.uint8)).convert("L")
 
                 mask.save(msk_dst_path)
-
+    if delete_tmp:
+        shutil.rmtree(data_dir, ignore_errors=True)
+        data_dir.mkdir(parents=True, exist_ok=True)
     return save_folder
 
 
