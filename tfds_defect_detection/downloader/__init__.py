@@ -65,7 +65,7 @@ def download_and_prepare(
             ds_cache_dir / "test_masks"
         )
         if download is False:
-            return result
+            yield result
 
         ds_cache_dir.mkdir(exist_ok=True, parents=True)
 
