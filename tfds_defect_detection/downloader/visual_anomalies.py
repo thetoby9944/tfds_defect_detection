@@ -85,7 +85,7 @@ def download_and_extract(cache_dir):
     visa_root = cache_dir / visa_folder_name
     if not visa_root.is_dir():
         get_file(
-            fname=str(cache_dir / visa_name),
+            fname=visa_name,
             origin=VISA_ORIGIN,
             untar=True,
             cache_dir=cache_dir,
