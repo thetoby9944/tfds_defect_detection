@@ -52,7 +52,7 @@ def _prepare_anomaly_images_with_masks(
 
     print("Preparing", old_root, new_root_images, "and", new_root_masks)
 
-    for img_path in tqdm():
+    for img_path in tqdm(all_images):
         if img_path.name.startswith("."):
             continue
         img_target = Path(str(img_path).replace(old_root, new_root_images))
