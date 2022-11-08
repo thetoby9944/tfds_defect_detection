@@ -14,8 +14,14 @@ def _prepare_good_images(
         skip_if_image_exists=True
 ):
     old_root = download_directory.name
+    result = Path(str(download_directory).replace(old_root, new_root))
+    all_images = list(download_directory.rglob("**/*train/good/*.*"))
+
+    if not len(all_images) and result.is_dir():
+        return result
+
     print("Preparing", old_root, new_root)
-    for path in tqdm(list(download_directory.rglob("**/*train/good/*.*"))):
+    for path in tqdm(all_images):
         if path.name.startswith("."):
             continue
         target = Path(str(path).replace(old_root, new_root))
@@ -23,7 +29,7 @@ def _prepare_good_images(
             continue
         copy_to_folder(path, target)
 
-    return Path(str(download_directory).replace(old_root, new_root))
+    return result
 
 
 def _prepare_anomaly_images_with_masks(
@@ -34,9 +40,19 @@ def _prepare_anomaly_images_with_masks(
         skip_if_image_exists=True
 ):
     old_root = download_directory.name
+
+    result = (
+        Path(str(download_directory).replace(old_root, new_root_images)),
+        Path(str(download_directory).replace(old_root, new_root_masks))
+    )
+    all_images = list(download_directory.rglob("**/*test/**/*.*"))
+
+    if not len(all_images) and result[0].is_dir() and result[1].is_dir():
+        return result
+
     print("Preparing", old_root, new_root_images, "and", new_root_masks)
 
-    for img_path in tqdm(list(download_directory.rglob("**/*test/**/*.*"))):
+    for img_path in tqdm():
         if img_path.name.startswith("."):
             continue
         img_target = Path(str(img_path).replace(old_root, new_root_images))
@@ -58,10 +74,7 @@ def _prepare_anomaly_images_with_masks(
         elif not mask_target.is_file():
             copy_to_folder(mask_path, mask_target)
 
-    return (
-        Path(str(download_directory).replace(old_root, new_root_images)),
-        Path(str(download_directory).replace(old_root, new_root_masks))
-    )
+    return result
 
 
 def restructure_mvtec_style_dataset(

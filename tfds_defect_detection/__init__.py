@@ -141,10 +141,11 @@ def load(
     peek : ``bool``
         Whether to plot first batch of images of the loaded data.
         Defaults to True.
-    download : optional, ``bool``
-        Whether to call download_and_prepare. If download is set to ``False``,
-        the function expects ``data_dir`` to already hold the requested data.
-        Defaults to ``True``
+    download : [DEPRECATED] optional, ``bool``
+        This variable has no longer an effec.
+        Whether download is set to ``False`` or ``True``, when
+        ``data_dir`` to already holds the expected folder structure from a
+        previous run, the function will always try to use the cached version
     image_validation : optional, ``bool``
         Whether to open all images beforehand calling the DatasetBuilder.
         This will print the name of corrupted image files,
