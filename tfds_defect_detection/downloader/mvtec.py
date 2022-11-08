@@ -100,11 +100,11 @@ if __name__ == "__main__":
 
 def download_and_extract(cache_dir):
     mvtec_name = "mvtec_anomaly_detection.tar.xz"
-    mvtec_folder_name = "mvtec"
+    mvtec_folder_name = "mvtec_download"
     mvtec_root = cache_dir / mvtec_folder_name
     if not mvtec_root.is_dir():
         get_file(
-            fname=str(cache_dir / mvtec_name),
+            fname=mvtec_name,
             origin=MVTEC_ORIGIN,
             extract=True,
             cache_dir=cache_dir,
