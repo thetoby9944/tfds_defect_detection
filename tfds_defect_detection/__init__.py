@@ -61,10 +61,12 @@ def load(
 
     .. WARNING::
         Warning: calling this function might potentially trigger the download
-        of 30+ GiB to disk. Refer to the download argument.
+        of 30+ GiB to disk. Refer to the delete_tmp argument.
 
     names : ``Iterable[Literal["mvtec", "visa"]]``
-        List of named datasets to load. Defaults to ["mvtec", "visa"]
+        List of named datasets to load. Defaults to ["mvtec", "visa"]. Passing
+        multiple dataset names returns the result of
+        ``tf.data.Dataset.sample_from_datasets([dataset1, dataset2])``
     data_dir : ``pathlib.Path``
         directory to read/write data. Images cached here will be included in consecutive runs without the need for further download.
     pairing_mode : ``str``
@@ -147,7 +149,7 @@ def load(
         ``data_dir`` to already holds the expected folder structure from a
         previous run, the function will always try to use the cached version
     image_validation : optional, ``bool``
-        Whether to open all images beforehand calling the DatasetBuilder.
+        Whether to open all images before calling the DatasetBuilder.
         This will print the name of corrupted image files,
         which cannot be read by tensorflow. Defaults to ``False``
     crop_to_aspect_ratio : optional, ``bool``
@@ -160,9 +162,10 @@ def load(
     delete_tmp : optional, ``bool``
         If True (default), deletes temporary versions of the datasets.
         Only keeps the processed version of each dataset.
-        This means the original rchive, the original dataset,
-        and any intermediate processing steps are deleted. This saves memory.
-        The final results are still cached,
+        This means the original archive, the original dataset,
+        and any intermediate processing steps are deleted. Empty folders are
+        kept as a hint that these have been processed. This saves memory
+        and time on successive runs. The final results are still cached,
         so you can safely rerun this function without the need to download
         again. Yet, if you want to have a look at the original datasets,
         consider disabling this parameter.
