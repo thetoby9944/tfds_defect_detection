@@ -3,7 +3,7 @@ __version__ = "0.1.0"
 from pathlib import Path
 from typing import Optional, Iterable
 
-from tensorflow.data.experimental import sample_from_datasets
+import tensorflow as tf
 from typing_extensions import Literal
 import albumentations as A
 
@@ -212,7 +212,7 @@ def load(
         for train_folder, test_image_folder, test_mask_folder in all_folders
     ]
 
-    return sample_from_datasets(datasets)
+    return tf.data.Dataset.sample_from_datasets(datasets)
 
 
 if __name__ == '__main__':
