@@ -30,10 +30,25 @@ To directly jump into the code look at the sample notebook
 
     - tensorflow.data.Dataset builder for defect segmentation
     - Comes with unsupervised / self-supervised SotA datasets
-        - MVTEC
-        - VISA
     - Artificial defect generator
     - Evaluation data with hand labelled images
+
+Provides a tf.data.Dataset loader for
+------------------------------------------
+
+
++----------+------------------+-----------------------------------------------------------+
+| Dataset  | Licence          | Copyright                                                 |
++==========+==================+===========================================================+
+| MVTEC    | CC BY-NC-SA 4.0  | MVTEC.com, All rights reserved                            |
++----------+------------------+-----------------------------------------------------------+
+| VisA     | CC BY 4.0        | Amazon.com, Inc. or its affiliates. All Rights Reserved.  |
++----------+------------------+-----------------------------------------------------------+
+
+Dataset Links
+
+MVTEC: https://www.mvtec.com/company/research/datasets/mvtec-ad
+VisA: https://github.com/amazon-science/spot-diff
 
 
 Install
@@ -130,31 +145,55 @@ All parmeters
 
 
 
-.. admonition:: Docs
+Docs
+----
 
-    FOR API Reference see
+FOR API Reference see
 
-    https://tfds-defect-detection.readthedocs.io/en/latest/autoapi/tfds_defect_detection/index.html
-
-
-.. admonition:: Cite
-
-    If this project helped you during your work:
-    Until a publication is available, please cite as
-
-    Tobias Schiele. (2022). TFDS DD - Datasets for Defect Detection. https://github.com/thetoby9944/tfds_defect_detection.
+https://tfds-defect-detection.readthedocs.io/en/latest/autoapi/tfds_defect_detection/index.html
 
 
-    .. code-block:: latex
-
-        @misc{Schiele2019,
-            author = {Tobias Schiele},
-            title = {TFDS DD - Datasets for Defect Detection},
-            year = {2022},
-            publisher = {GitHub},
-            journal = {GitHub repository},
-            howpublished = {\url{https://github.com/thetoby9944/tfds_defect_detection}},
-        }
+Cite
+----
 
 
+If this project helped you during your work:
+Until a publication is available, please cite as
+
+Tobias Schiele. (2022). TFDS DD - Datasets for Defect Detection. https://github.com/thetoby9944/tfds_defect_detection.
+
+
+.. code-block:: latex
+
+   @misc{Schiele2019,
+       author = {Tobias Schiele},
+       title = {TFDS DD - Datasets for Defect Detection},
+       year = {2022},
+       publisher = {GitHub},
+       journal = {GitHub repository},
+       howpublished = {\url{https://github.com/thetoby9944/tfds_defect_detection}},
+   }
+
+
+If you use one of the datasets, include these citations:
+
+
+MVTEC
+~~~~~~
+
+Paul Bergmann, Kilian Batzner, Michael Fauser, David Sattlegger, Carsten Steger: The MVTec Anomaly Detection Dataset: A Comprehensive Real-World Dataset for Unsupervised Anomaly Detection; in: International Journal of Computer Vision 129(4):1038-1059, 2021, DOI: 10.1007/s11263-020-01400-4.
+
+Paul Bergmann, Michael Fauser, David Sattlegger, Carsten Steger: MVTec AD — A Comprehensive Real-World Dataset for Unsupervised Anomaly Detection; in: IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 9584-9592, 2019, DOI: 10.1109/CVPR.2019.00982.
+
+VisA
+~~~~~
+
+.. code-block:: latex
+
+   @article{zou2022spot,
+     title={SPot-the-Difference Self-Supervised Pre-training for Anomaly Detection and Segmentation},
+     author={Zou, Yang and Jeong, Jongheon and Pemula, Latha and Zhang, Dongqing and Dabeer, Onkar},
+     journal={arXiv preprint arXiv:2207.14315},
+     year={2022}
+   }
 
